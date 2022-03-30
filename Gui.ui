@@ -603,21 +603,16 @@
                 <widget class="QWidget" name="widget_5" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_3">
                   <item>
-                   <widget class="QLabel" name="Done_label">
-                    <property name="font">
-                     <font>
-                      <family>MS Shell Dlg 2</family>
-                     </font>
-                    </property>
+                   <widget class="QPushButton" name="Img_to_filters_spatial">
                     <property name="text">
-                     <string>To The Filters!!</string>
+                     <string>To spatial filters</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="Img_to_filters">
+                   <widget class="QPushButton" name="Img_to_filters_freq">
                     <property name="text">
-                     <string>Done</string>
+                     <string>To freq filters</string>
                     </property>
                    </widget>
                   </item>
