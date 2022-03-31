@@ -13,9 +13,9 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Image_Combo.activated.connect(self.Picking_Image_img)
         self.Color_Combo.activated.connect(self.Picking_Image_color)
         self.Img_to_filters_spatial.clicked.connect(self.Picking_Image_Filters_Spatial)
-        self.Img_to_filters_freq.clicked.connect(self.Picking_Image_Filters_Freq)
+        self.Img_to_filters_freq.clicked.connect(self.pressed_freq)
         self.Spatial_Combo.activated.connect(self.Picking_Filter_Spatial)
-        self.Freq_Combo.activated.connect(self.Picking_Filter_Freq)
+        self.Freq_Combo.activated.connect(self.Picking_Image_Freq)
 
 
     def browse(self):                   ##Browse for an image on local files
@@ -113,9 +113,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 self.Image_of_combo_spatial = "Cache/median.jpg"       
             return self.Image_of_combo_spatial
 
-    def Picking_Image_Filters_Freq(self):
-        self.Image_4.setPixmap(QtGui.QPixmap(self.pressed_freq()))
-        self.Image_5.setPixmap(QtGui.QPixmap(self.pressed_freq()))
+    
 
     # def Picking_Image_Filters_Freq(self):
     #     self.Image_5.setPixmap(QtGui.QPixmap(self.pressed_freq()))
@@ -134,62 +132,101 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.ax2 = self.fig.add_subplot(2,2,2)
         self.ax2.imshow(self.magnitude_spectrum, cmap = "Greys_r")
         self.ax2.title.set_text('FFT of image')
-        plt.imsave("Cache/input_image.jpg", self.image_freq)
+        plt.imsave("Cache/input_image.jpg", self.image_freq, cmap = "Greys_r")
         plt.imsave('Cache/dft.jpg', self.magnitude_spectrum, cmap = "Greys_r" )
         #plt.savefig('Cache/dft.jpg',bbox_inches = 'tight')
-        self.input_image = 'Cache/input_image.jpg'
-        self.image_to_be_filtered_frequency_1 = "Cache/dft.jpg"
-        self.image_to_be_filtered_frequency_2 = "Cache/input_image.jpg"
-        return self.image_to_be_filtered_frequency_1
-        return self.image_to_be_filtered_frequency_2
+        self.image_to_be_filtered_frequency_1 = "Cache/input_image.jpg"
+        self.image_to_be_filtered_frequency_2 = "Cache/dft.jpg"
+        self.Image_4.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_1))
+        self.Image_5.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_2))
+
+
+    # def Picking_Image_Filters_Freq(self):
+    #     self.Image_4.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_1))
+    #     self.Image_5.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_2))
 
 
 
-    def Picking_Filter_Freq(self):      ##Changes Image after applying frequency filter.
-        self.Image_4.setPixmap(QtGui.QPixmap(self.Picking_Image_Freq()))
+    # def Picking_Filter_Freq(self):      ##Changes Image after applying frequency filter.
+    #     self.Image_4.setPixmap(QtGui.QPixmap(self.Picking_Image_Freq()))
 
 
     def Picking_Image_Freq(self):
-        self.image_freq_2 = cv.imread(self.image_to_be_filtered_frequency)
+        self.image_freq_2 = cv.imread(self.image_to_be_filtered_frequency_2)
         if self.Freq_Combo.currentIndex() == 0:
             self.Image_4.clear()
-        else:
-            rows, cols = self.image_freq_2.shape[:2]
+            self.Image_5.clear()
+        elif self.Freq_Combo.currentIndex() == 1:
+            rows,cols = self.image_freq_2.shape[:2]
             crow, ccol = int(rows / 2), int(cols / 2)
-            mask = np.ones((rows, cols,2), np.uint8)
+            mask_1 = np.ones((rows, cols,2), np.uint8)
             r = 80
             center = [crow, ccol]
             x, y = np.ogrid[:rows, :cols]
             mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= r*r
-            mask[mask_area] = 0
-
-            fshift = self.dft_shift * mask
-
+            mask_1[mask_area] = 0
+            fshift = self.dft_shift * mask_1
             fshift_mask_mag = 20 * np.log(cv.magnitude(fshift[:, :, 0], fshift[:, :, 1]))
-
             f_ishift = np.fft.ifftshift(fshift)
-
-
             img_back = cv.idft(f_ishift)
-
             img_back = cv.magnitude(img_back[:, :, 0], img_back[:, :, 1])
-
-            fig = plt.figure(figsize=(12, 12))
-            ax1 = fig.add_subplot(2,2,1)
+            fig_1 = plt.figure(figsize=(12, 12))
+            ax1 = fig_1.add_subplot(4,4,1)
             ax1.imshow(self.image_freq, cmap='gray')
             ax1.title.set_text('Input Image')
-            ax2 = fig.add_subplot(2,2,2)
+            ax2 = fig_1.add_subplot(4,4,2)
             ax2.imshow(self.image_freq_2, cmap='gray')
             ax2.title.set_text('FFT of image')
-            ax3 = fig.add_subplot(2,2,3)
+            plt.savefig("Cache/inverse_dft_1.jpg", bbox_inches = 'tight')
+            fig_2 = plt.figure(figsize=(12, 12))
+            ax3 = fig_2.add_subplot(4,4,1)
             ax3.imshow(fshift_mask_mag, cmap='gray')
             ax3.title.set_text('FFT + Mask')
-            ax4 = fig.add_subplot(2,2,4)
+            ax4 = fig_2.add_subplot(4,4,2)
             ax4.imshow(img_back, cmap='gray')
             ax4.title.set_text('After inverse FFT')
             plt.savefig("Cache/inverse_dft.jpg",bbox_inches = 'tight')
-            self.image_freq_2 = "Cache/inverse_dft.jpg"
-            return self.image_freq_2
+            self.image_freq_3 = "Cache/inverse_dft_1.jpg"
+            self.image_freq_4 = "Cache/inverse_dft.jpg"
+            self.Image_4.setPixmap(QtGui.QPixmap(self.image_freq_3))
+            self.Image_5.setPixmap(QtGui.QPixmap(self.image_freq_4))
+
+        elif self.Freq_Combo.currentIndex() == 2:
+            rows, cols = self.image_freq_2.shape[:2]
+            crow, ccol = int(rows / 2), int(cols / 2)
+            mask_2 = np.zeros((rows, cols, 2), np.uint8)
+            r = 80
+            center = [crow, ccol]
+            x, y = np.ogrid[:rows, :cols]
+            mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= r*r
+            mask_2[mask_area] = 1
+            fshift = self.dft_shift * mask_2
+            fshift_mask_mag = 20 * np.log(cv.magnitude(fshift[:, :, 0], fshift[:, :, 1]))
+            f_ishift = np.fft.ifftshift(fshift)
+            img_back = cv.idft(f_ishift)
+            img_back = cv.magnitude(img_back[:, :, 0], img_back[:, :, 1])
+            fig_1 = plt.figure(figsize=(12, 12))
+            ax1 = fig_1.add_subplot(4,4,1)
+            ax1.imshow(cv.imread(self.image_to_be_filtered_frequency_1), cmap='gray')
+            ax1.title.set_text('Input Image')
+            ax2 = fig_1.add_subplot(4,4,2)
+            ax2.imshow(cv.imread(self.image_to_be_filtered_frequency_2), cmap='gray')
+            ax2.title.set_text('FFT of image')
+            plt.savefig("Cache/inverse_dft_3.jpg", bbox_inches = 'tight')
+            fig_2 = plt.figure(figsize=(12, 12))
+            ax3 = fig_2.add_subplot(4,4,1)
+            ax3.imshow(fshift_mask_mag, cmap='gray')
+            ax3.title.set_text('FFT + Mask')
+            ax4 = fig_2.add_subplot(4,4,2)
+            ax4.imshow(img_back, cmap='gray')
+            ax4.title.set_text('After inverse FFT')
+            plt.savefig("Cache/inverse_dft_4.jpg",bbox_inches = 'tight')
+            self.image_freq_5 = "Cache/inverse_dft_3.jpg"
+            self.image_freq_6 = "Cache/inverse_dft_4.jpg"
+            self.Image_4.setPixmap(QtGui.QPixmap(self.image_freq_5))
+            self.Image_5.setPixmap(QtGui.QPixmap(self.image_freq_6))
+
+            
 
 
             # img= cv.imread(self.image_to_be_filtered_frequency)
@@ -220,11 +257,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 # ax4.title.set_text('After inverse FFT')
                 # plt.savefig("dft_after_filter.jpg", bbox_inches = 'tight')
                 # self.image_of_combo_freq = "dft_after_filter.jpg" 
-
-
-
-              
-            return self.image_of_combo_freq
 
 
     

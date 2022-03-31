@@ -1214,12 +1214,12 @@
                     </item>
                     <item>
                      <property name="text">
-                      <string>Median</string>
+                      <string>High Pass</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>La placian</string>
+                      <string>Low Pass</string>
                      </property>
                     </item>
                    </widget>
