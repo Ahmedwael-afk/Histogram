@@ -115,6 +115,11 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
 
     def Picking_Image_Filters_Freq(self):
         self.Image_4.setPixmap(QtGui.QPixmap(self.pressed_freq()))
+        self.Image_5.setPixmap(QtGui.QPixmap(self.pressed_freq()))
+
+    # def Picking_Image_Filters_Freq(self):
+    #     self.Image_5.setPixmap(QtGui.QPixmap(self.pressed_freq()))
+
 
     def pressed_freq(self):
         self.image_freq = cv.imread(self.Image_of_combo_color,0)
@@ -129,10 +134,15 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.ax2 = self.fig.add_subplot(2,2,2)
         self.ax2.imshow(self.magnitude_spectrum, cmap = "Greys_r")
         self.ax2.title.set_text('FFT of image')
+        plt.imsave("Cache/input_image.jpg", self.image_freq)
         plt.imsave('Cache/dft.jpg', self.magnitude_spectrum, cmap = "Greys_r" )
         #plt.savefig('Cache/dft.jpg',bbox_inches = 'tight')
-        self.image_to_be_filtered_frequency = "Cache/dft.jpg"
-        return self.image_to_be_filtered_frequency
+        self.input_image = 'Cache/input_image.jpg'
+        self.image_to_be_filtered_frequency_1 = "Cache/dft.jpg"
+        self.image_to_be_filtered_frequency_2 = "Cache/input_image.jpg"
+        return self.image_to_be_filtered_frequency_1
+        return self.image_to_be_filtered_frequency_2
+
 
 
     def Picking_Filter_Freq(self):      ##Changes Image after applying frequency filter.
@@ -166,10 +176,10 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
 
             fig = plt.figure(figsize=(12, 12))
             ax1 = fig.add_subplot(2,2,1)
-            ax1.imshow(self.image_freq_2, cmap='gray')
+            ax1.imshow(self.image_freq, cmap='gray')
             ax1.title.set_text('Input Image')
             ax2 = fig.add_subplot(2,2,2)
-            ax2.imshow(self.magnitude_spectrum, cmap='gray')
+            ax2.imshow(self.image_freq_2, cmap='gray')
             ax2.title.set_text('FFT of image')
             ax3 = fig.add_subplot(2,2,3)
             ax3.imshow(fshift_mask_mag, cmap='gray')
