@@ -35,3 +35,4 @@ plt.show()
 
 
 print(Sum_2)
+print(Sum,type(Sum))
