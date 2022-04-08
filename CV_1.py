@@ -262,6 +262,10 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
     def Histogram(self):    
         if i in range(1,5):
             sum += i
+
+    def HistEqu(self):
+        if j in range (1,4):
+            sum = 0
         
 
 
