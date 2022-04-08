@@ -259,11 +259,11 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 # self.image_of_combo_freq = "dft_after_filter.jpg" 
 
 
-    def Histogram(self):    
-        if i in range(1,5):
-            sum += i
+    def Histogram(self):
+        print ("histogram")   
+        
 
-    
+
         
 
 
