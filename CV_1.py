@@ -261,7 +261,9 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
 
     def Histogram(self):
         print ("histogram")
-        print( "2 histograms")   
+        print( "2 histograms")
+        print("3")
+        print("test")   
         
 
 
