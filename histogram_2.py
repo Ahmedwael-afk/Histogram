@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-image = cv.imread("Images_and_Videos/girl.jpg")
+image = cv.imread("Images_and_Videos/FanArtCompetition.jpg")
 gray = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 #print(gray[250,450])
 cv.imshow("gray",gray)
@@ -45,12 +45,9 @@ New_image = np.zeros(256)
 # 	New_image[new_levels[image_1D[0,i]]] += 1  
 
 
-# y = np.reshape(New_image,(w))
-s1, s2 = gray.shape
 Y = np.zeros_like(gray)
-# applying transfered values for each pixels
-for i in range(0, s1):
-	for j in range(0, s2):
+for i in range(0, w):
+	for j in range(0, h):
 		Y[i, j] = new_levels[gray[i, j]]
 
 cv.imshow("Y",Y)
