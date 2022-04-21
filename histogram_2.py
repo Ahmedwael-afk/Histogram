@@ -18,7 +18,7 @@ image_1D = np.reshape(gray,(1,(w*h)))
 for i in range (1,w*h):
 	pre_histogram[image_1D[0,i]] += 1
 
-plt.plot(pre_histogram)
+#plt.plot(pre_histogram)
 
 #print(pre_histogram[:])
 normalized_histo = pre_histogram[:]/(w*h)
@@ -34,7 +34,7 @@ new_levels = np.uint8(255*sum_histo)
 print(new_levels[255])
 Histogram = np.round(new_levels)
 plt.plot(Histogram)
-plt.bar(Histogram,Histogram)
+#plt.bar(Histogram,Histogram)
 plt.show()
 
 print(new_levels[gray[3,100]])
