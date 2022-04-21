@@ -2,10 +2,11 @@ import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-img = cv.imread("Images_and_Videos/land.jpg", 0)
+img = cv.imread("Images_and_Videos/girl.jpg", 0)
 w , h = img.shape[:2]
 print(w,h)
 Values = np.array(img.flatten())
+print(len(Values))
 histogram = np.zeros(256)
 
 for i in range(len(Values)):
@@ -15,7 +16,7 @@ plt.plot(histogram)
 plt.show()
 print(len(histogram))
 
-histo = np.array (histogram)/(len(Values)*40)
+histo = np.array (histogram)/(w*h)
 Sum = np.zeros(len(histo))
 print(len(Sum))
 for i in range(256):
