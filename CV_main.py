@@ -1,4 +1,4 @@
-from Gui_2 import Ui_MainWindow
+from Gui import Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib import pyplot as plt
 import numpy as np
