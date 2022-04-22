@@ -1,9 +1,11 @@
-from Gui import Ui_MainWindow
+from Gui_2 import Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib import pyplot as plt
 import numpy as np
 import cv2 as cv
-import sys
+import sys, os
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
 
 class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test    
     def __init__(self):
@@ -17,6 +19,24 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Spatial_Combo.activated.connect(self.Picking_Filter_Spatial)
         self.Freq_Combo.activated.connect(self.Picking_Image_Freq)
         self.pushButton_Histogram.clicked.connect(self.Histogram)
+        self.pushButton_reset.clicked.connect(self.reset)
+
+
+
+    def reset(self):
+        self.Image_1.clear()
+        self.Image_2.clear()
+        self.Image_3.clear()
+        self.Image_4.clear()
+        self.Image_5.clear()
+        self.Image_6.clear()
+        self.Image_7.clear()
+        self.Image_8.clear()
+        self.Image_9.clear()
+        self.Image_Combo.setCurrentIndex(0)
+        self.Color_Combo.setCurrentIndex(0)
+        self.Spatial_Combo.setCurrentIndex(0)
+        self.Freq_Combo.setCurrentIndex(0)
 
 
     def browse(self):                   ##Browse for an image on local files
@@ -271,13 +291,17 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         gray_1D = np.reshape(gray,(1,(w*h)))
         for i in range (w*h):
             Histogram[gray_1D[0,i]] += 1
+
+        self.Image_7.clear()
+        unique_2, count_2 = np.unique(gray,return_counts=True)
+        self.Image_7.plot(unique_2,count_2)
         # fig_1 = plt.figure(figsize=(12, 12))
         # ax1 = fig_1.add_subplot(4,4,1)
         # ax1.imshow(Histogram)
-        plt.plot(Histogram)
-        plt.savefig("Cache/Histogram.jpg", bbox_inches = 'tight')
-        self.Histogram = "Cache/Histogram.jpg"
-        self.Image_7.setPixmap(QtGui.QPixmap(self.Histogram))
+        # plt.plot(Histogram)
+        # plt.savefig("Cache/Histogram.jpg", bbox_inches = 'tight')
+        # self.Histogram = "Cache/Histogram.jpg"
+        #self.Image_7.setPixmap(QtGui.QPixmap(self.Histogram))
 
         #### Equalized Histogram
 
@@ -291,10 +315,15 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         #Equalized_Histogram[int(New_levels[gray_1D[0,w*h-1]])] 
         for i in range(w*h):
             Equalized_Histogram[int(New_levels[gray_1D[0,i]])] += 1 
-        plt.plot(Equalized_Histogram)
-        plt.savefig("Cache/Equalized_Histogram.jpg",bbox_inches = 'tight')
-        self.Equalized_Histogram = "Cache/Equalized_Histogram.jpg"
-        self.Image_9.setPixmap(QtGui.QPixmap(self.Equalized_Histogram))
+
+
+
+
+
+        # plt.plot(Equalized_Histogram)
+        # plt.savefig("Cache/Equalized_Histogram.jpg",bbox_inches = 'tight')
+        # self.Equalized_Histogram = "Cache/Equalized_Histogram.jpg"
+        # self.Image_9.setPixmap(QtGui.QPixmap(self.Equalized_Histogram))
         
         #Final Image
 
@@ -314,7 +343,10 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         cv.imwrite("Cache/final.jpg",final)
         self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))
 
-        # unique, count = np.unique(final, return_counts=True)
+        unique, count = np.unique(final, return_counts=True)
+        self.Image_9.clear()
+        self.Image_9.plot(unique, count)
+
         # #plt.bar(np.zeros(256),Equalized_Histogram)
         # plt.bar(unique,count)
         # plt.show()
