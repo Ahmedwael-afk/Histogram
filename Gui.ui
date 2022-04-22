@@ -5065,9 +5065,6 @@
                </disabled>
               </palette>
              </property>
-             <property name="autoFillBackground">
-              <bool>true</bool>
-             </property>
              <layout class="QVBoxLayout" name="verticalLayout_15">
               <item>
                <widget class="QLabel" name="label_2">
@@ -5156,9 +5153,6 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="autoFillBackground">
-              <bool>true</bool>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_17">
               <item>
