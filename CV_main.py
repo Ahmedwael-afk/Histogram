@@ -317,7 +317,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Image_6.setPixmap(QtGui.QPixmap("Cache/gray_2.jpg"))    #### Org_image plotting
         self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))     #### Equalized_image plotting
 
-        if self.Image_of_combo_color == "Cache/gray.jpg":
+        if self.Image_of_combo_color == "Cache/gray.jpg" or "Cache/rgb.jpg":
             filtered_img,filtered_hist,filtered_equa = self.Histogram(self.Image_of_combo_spatial)
             cv.imwrite("Cache/filtered_img.jpg",filtered_img)
             cv.imwrite("Cache/filtered_equalized.jpg",filtered_equa)
@@ -338,7 +338,10 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
     def Histogram(self,Input):
         x = np.shape(cv.imread(Input))
         if x[-1] == 3:
-            self.gray = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2GRAY)
+            #self.gray = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2GRAY)
+            hsv = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2HSV)
+            h,s,v =cv.split(hsv)
+            self.gray = v
         else:
             self.gray = cv.imread(Input)
         # cv.imwrite("Cache/gray_2.jpg",gray)
