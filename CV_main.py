@@ -323,11 +323,11 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             cv.imwrite("Cache/filtered_equalized.jpg",filtered_equa)
             self.Image_11.clear()
             unique_filtered_hist, count_filtered_hist = np.unique(filtered_img,return_counts=True)
-            self.Image_11.plot(unique_org_hist,count_org_hist)                      #### Histogram plotting
+            self.Image_11.plot(unique_filtered_hist,count_filtered_hist)                      #### Histogram plotting
 
-            unique_equa_filtered_hist, count_equa_filtered_hist = np.unique(filtered_equa, return_counts=True)
             self.Image_15.clear()
-            self.Image_15.plot(unique_equa_hist, count_equa_hist)
+            unique_equa_filtered_hist, count_equa_filtered_hist = np.unique(filtered_equa, return_counts=True)
+            self.Image_15.plot(unique_equa_filtered_hist, count_equa_filtered_hist)
 
             self.Image_10.setPixmap(QtGui.QPixmap("Cache/filtered_img.jpg"))           #### Org_image plotting
             self.Image_14.setPixmap(QtGui.QPixmap("Cache/filtered_equalized.jpg"))     #### Equalized_image plotting
