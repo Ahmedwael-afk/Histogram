@@ -168,6 +168,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             f_ishift = np.fft.ifftshift(fshift)
             img_back = cv.idft(f_ishift)
             img_back = cv.magnitude(img_back[:, :, 0], img_back[:, :, 1])
+
             fig_1 = plt.figure(figsize=(12, 12))
             ax1 = fig_1.add_subplot(4,4,1)
             ax1.imshow(self.image_freq, cmap='gray')
@@ -176,6 +177,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             ax2.imshow(self.image_freq_2, cmap='gray')
             ax2.title.set_text('FFT of image')
             plt.savefig("Cache/inverse_dft_1.jpg", bbox_inches = 'tight')
+
             fig_2 = plt.figure(figsize=(12, 12))
             ax3 = fig_2.add_subplot(4,4,1)
             ax3.imshow(fshift_mask_mag, cmap='gray')
@@ -184,6 +186,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             ax4.imshow(img_back, cmap='gray')
             ax4.title.set_text('After inverse FFT')
             plt.savefig("Cache/inverse_dft.jpg",bbox_inches = 'tight')
+            
             self.image_freq_3 = "Cache/inverse_dft_1.jpg"
             self.image_freq_4 = "Cache/inverse_dft.jpg"
             self.Image_4.setPixmap(QtGui.QPixmap(self.image_freq_3))
@@ -203,6 +206,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             f_ishift = np.fft.ifftshift(fshift)
             img_back = cv.idft(f_ishift)
             img_back = cv.magnitude(img_back[:, :, 0], img_back[:, :, 1])
+
             fig_1 = plt.figure(figsize=(12, 12))
             ax1 = fig_1.add_subplot(4,4,1)
             ax1.imshow(cv.imread(self.image_to_be_filtered_frequency_1), cmap='gray')
@@ -211,6 +215,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             ax2.imshow(cv.imread(self.image_to_be_filtered_frequency_2), cmap='gray')
             ax2.title.set_text('FFT of image')
             plt.savefig("Cache/inverse_dft_3.jpg", bbox_inches = 'tight')
+
             fig_2 = plt.figure(figsize=(12, 12))
             ax3 = fig_2.add_subplot(4,4,1)
             ax3.imshow(fshift_mask_mag, cmap='gray')
@@ -219,6 +224,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             ax4.imshow(img_back, cmap='gray')
             ax4.title.set_text('After inverse FFT')
             plt.savefig("Cache/inverse_dft_4.jpg",bbox_inches = 'tight')
+
             self.image_freq_5 = "Cache/inverse_dft_3.jpg"
             self.image_freq_6 = "Cache/inverse_dft_4.jpg"
             self.Image_4.setPixmap(QtGui.QPixmap(self.image_freq_5))
