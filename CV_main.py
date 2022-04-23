@@ -92,17 +92,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
     def Picking_Image_Filters_Spatial(self):      ##Sends Image after changing color space to Image_3 & Image_4
         self.Image_3.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
 
-    # def pressed_spatial(self):                   ##Function of pushButton (Done)
-    #     self.image = cv.imread(self.Image_of_combo_color)
-    #     cv.imwrite("Cache/image_to_be_filtered_spatial.jpg",self.image)
-    #     self.image_to_be_filtered_spatial = "Cache/image_to_be_filtered_spatial.jpg"
-    #     return self.image_to_be_filtered_spatial
 
-
-
-
-    # def Picking_Filter_Spatial(self):      ##Changes Image after applying spatial filter.
-    #     self.Image_3.setPixmap(QtGui.QPixmap(self.Picking_Image_Spatial()))
 
     def Picking_Image_Spatial(self):       ##Apply different filters depending on combobox
         self.image_spatial = cv.imread(self.Image_of_combo_color)
