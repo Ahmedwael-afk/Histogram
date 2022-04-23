@@ -133,11 +133,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 self.Image_of_combo_spatial = "Cache/median.jpg"       
             return self.Image_of_combo_spatial
 
-    
-
-    # def Picking_Image_Filters_Freq(self):
-    #     self.Image_5.setPixmap(QtGui.QPixmap(self.pressed_freq()))
-
 
     def pressed_freq(self):
         self.image_freq = cv.imread(self.Image_of_combo_color,0)
@@ -159,16 +154,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.image_to_be_filtered_frequency_2 = "Cache/dft.jpg"
         self.Image_4.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_1))
         self.Image_5.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_2))
-
-
-    # def Picking_Image_Filters_Freq(self):
-    #     self.Image_4.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_1))
-    #     self.Image_5.setPixmap(QtGui.QPixmap(self.image_to_be_filtered_frequency_2))
-
-
-
-    # def Picking_Filter_Freq(self):      ##Changes Image after applying frequency filter.
-    #     self.Image_4.setPixmap(QtGui.QPixmap(self.Picking_Image_Freq()))
 
 
     def Picking_Image_Freq(self):
@@ -278,19 +263,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 # plt.savefig("dft_after_filter.jpg", bbox_inches = 'tight')
                 # self.image_of_combo_freq = "dft_after_filter.jpg" 
 
-    # def Histogram_helper_1(self):
-    #     self.Histogram(self.Image_of_combo_img)
-
-    # def Histogram_helper_2(self):
-    #     if self.Image_of_combo_color == "Cache/gray.jpg":
-    #         self.Histogram(self.Image_of_combo_color)
-    #     else:
-            ####################    HAMZA_ERROR MESSAGE       ####################           ####################           ####################           ####################           ####################
-    # def buttonclicked(self):
-    #     org_hist, equalized_org_hist = Histogram(orginal_img)
-    #     filtered_org_hist, filtered_equalized_org_hist = Histogram(filtered_orginal_img)
-    #     then plot
-
     def Histogram_helper(self):
         img,org_hist, equalized_image = self.Histogram(self.Image_of_combo_img)
         cv.imwrite("Cache/gray_2.jpg",img)
@@ -327,24 +299,16 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
     def Histogram(self,Input):
         x = np.shape(cv.imread(Input))
         if x[-1] == 3:
-            #self.gray = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2GRAY)
             hsv = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2HSV)
             h,s,v =cv.split(hsv)
             self.gray = v
         else:
             self.gray = cv.imread(Input)
-        # cv.imwrite("Cache/gray_2.jpg",gray)
-        # self.Image_6.setPixmap(QtGui.QPixmap("Cache/gray_2.jpg"))
         w,h = self.gray.shape
         Histogram = np.zeros(256)
         gray_1D = np.reshape(self.gray,(1,(w*h)))
         for i in range (w*h):
             Histogram[gray_1D[0,i]] += 1
-
-        # self.Image_7.clear()
-        # unique_2, count_2 = np.unique(gray,return_counts=True)
-        # self.Image_7.plot(unique_2,count_2)
-
 
         #### Equalized Histogram
 
@@ -354,10 +318,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             Cm[i] = sum(Histogram_norm[0:i+1])
         scale = 255*Cm
         New_levels = np.round(scale)
-        #Equalized_Histogram = np.zeros(256)
-        #Equalized_Histogram[int(New_levels[gray_1D[0,w*h-1]])] 
-        # for i in range(w*h):
-        #     Equalized_Histogram[int(New_levels[gray_1D[0,i]])] += 1 
 
 
 
@@ -365,18 +325,9 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         final = np.zeros_like(gray_1D)             #Can show Equalized image by 2 ways, 1)using 2 nested loops and 2x2 array
         for i in range (w*h):                      #or 2)using 1 loop, 1xsize array then reshape it to image dimensions 
             final[0,i] = New_levels[gray_1D[0,i]]
-
         final = np.reshape(final,(w,h))
-        # cv.imwrite("Cache/final.jpg",final)
-        # self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))
-
-        # unique, count = np.unique(final, return_counts=True)
-        # self.Image_9.clear()
-        # self.Image_9.plot(unique, count)
-    
+        
         return self.gray,Histogram,final
-        # x,y = Histogram(input_1)
-        # q,r = Histogram(input_2)
 
 
 
