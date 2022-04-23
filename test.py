@@ -1,13 +1,16 @@
 import cv2 as cv
 import numpy as np
 
-gray = cv.imdecode(np.fromfile("Images_and_Videos/ghost.png", dtype=np.uint8), 1)
-gray = cv.cvtColor(gray, cv.COLOR_BGR2GRAY)
-gray = cv.resize(gray, (640, 420))
-
-# Fourier transform
-img_dft = np.fft.fft2(gray)
-dft_shift = np.fft.fftshift(img_dft)  # Move frequency domain from upper left to middle
-orignal_fourier= np.log(np.abs(dft_shift))
-cv.imshow("org",orignal_fourier)
+img = cv.imread("Images_and_Videos/girl.jpg")
+cv.imshow("img",img)
+gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+#gray_2 = cv.cvtColor(gray,cv.COLOR_BGR2GRAY)
 cv.waitKey(0)
+
+#print(np.shape(img),(np.shape(gray)))
+# print(img.shape[1:2])
+# print(gray.shape[:2])
+x = np.shape(img)
+y= np.shape(gray)
+print(y[-1])
+print(x[-1])

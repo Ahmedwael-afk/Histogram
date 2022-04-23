@@ -18,12 +18,15 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Img_to_filters_freq.clicked.connect(self.pressed_freq)
         self.Spatial_Combo.activated.connect(self.Picking_Filter_Spatial)
         self.Freq_Combo.activated.connect(self.Picking_Image_Freq)
-        self.pushButton_Histogram.clicked.connect(self.Histogram)
+        self.pushButton_Histogram.clicked.connect(self.Histogram_helper)
         self.pushButton_reset.clicked.connect(self.reset)
 
 
 
     def reset(self):
+        # for i in range (1,14):
+        #     x = "Image_"+str(i)
+        #     self.x.clear()
         self.Image_1.clear()
         self.Image_2.clear()
         self.Image_3.clear()
@@ -33,6 +36,10 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Image_7.clear()
         self.Image_8.clear()
         self.Image_9.clear()
+        self.Image_10.clear()
+        self.Image_11.clear()
+        self.Image_12.clear()
+        self.Image_13.clear()
         self.Image_Combo.setCurrentIndex(0)
         self.Color_Combo.setCurrentIndex(0)
         self.Spatial_Combo.setCurrentIndex(0)
@@ -69,26 +76,29 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
 
     def apply_color_space(self):           ##Changes color space and sends the pic to image_2
         self.image = cv.imread(self.Image_of_combo_img)
+        # if self.Color_Combo.currentIndex() == 0:
+        #     self.Image_2.clear()
+        # else:
         if self.Color_Combo.currentIndex() == 0:
-            self.Image_2.clear()
-        else:
-            if self.Color_Combo.currentIndex() == 1: 
-                self.gray = cv.cvtColor(self.image,cv.COLOR_BGR2GRAY)
-                cv.imwrite("Cache/gray.jpg",self.gray)
-                self.Image_of_combo_color = "Cache/gray.jpg"
-            elif self.Color_Combo.currentIndex() == 2:
-                self.rgb = cv.cvtColor(self.image,cv.COLOR_BGR2RGB)
-                cv.imwrite("Cache/rgb.jpg",self.rgb)
-                self.Image_of_combo_color = "Cache/rgb.jpg"
-            elif self.Color_Combo.currentIndex() == 3:
-                self.LAB = cv.cvtColor(self.image,cv.COLOR_BGR2LAB)
-                cv.imwrite("Cache/LAB.jpg",self.LAB)
-                self.Image_of_combo_color = "Cache/LAB.jpg"
-            elif self.Color_Combo.currentIndex() == 4:
-                self.HSV = cv.cvtColor(self.image,cv.COLOR_BGR2HSV)
-                cv.imwrite("Cache/HSV.jpg",self.HSV)
-                self.Image_of_combo_color = "Cache/HSV.jpg"
-            return self.Image_of_combo_color
+            cv.imwrite("Cache/rgb.jpg",self.image)
+            self.Image_of_combo_color = "Cache/rgb.jpg"
+        elif self.Color_Combo.currentIndex() == 1: 
+            self.gray = cv.cvtColor(self.image,cv.COLOR_BGR2GRAY)
+            cv.imwrite("Cache/gray.jpg",self.gray)
+            self.Image_of_combo_color = "Cache/gray.jpg"
+        elif self.Color_Combo.currentIndex() == 2:
+            self.bgr = cv.cvtColor(self.image,cv.COLOR_BGR2RGB)
+            cv.imwrite("Cache/bgr.jpg",self.bgr)
+            self.Image_of_combo_color = "Cache/rgb.jpg"
+        elif self.Color_Combo.currentIndex() == 3:
+            self.LAB = cv.cvtColor(self.image,cv.COLOR_BGR2LAB)
+            cv.imwrite("Cache/LAB.jpg",self.LAB)
+            self.Image_of_combo_color = "Cache/LAB.jpg"
+        elif self.Color_Combo.currentIndex() == 4:
+            self.HSV = cv.cvtColor(self.image,cv.COLOR_BGR2HSV)
+            cv.imwrite("Cache/HSV.jpg",self.HSV)
+            self.Image_of_combo_color = "Cache/HSV.jpg"
+        return self.Image_of_combo_color
 
     def Picking_Image_Filters_Spatial(self):      ##Sends Image after changing color space to Image_3 & Image_4
         self.Image_3.setPixmap(QtGui.QPixmap(self.pressed_spatial()))
@@ -279,29 +289,70 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 # plt.savefig("dft_after_filter.jpg", bbox_inches = 'tight')
                 # self.image_of_combo_freq = "dft_after_filter.jpg" 
 
+    # def Histogram_helper_1(self):
+    #     self.Histogram(self.Image_of_combo_img)
 
-    def Histogram(self):
-        self.input_1 = cv.imread(self.Image_of_combo_img)
-        #self.input_2 = self.Image_of_combo_color
-        gray = cv.cvtColor(self.input_1,cv.COLOR_BGR2GRAY)
-        cv.imwrite("Cache/gray.jpg",gray)
-        self.Image_6.setPixmap(QtGui.QPixmap("Cache/gray.jpg"))
-        w,h = gray.shape
+    # def Histogram_helper_2(self):
+    #     if self.Image_of_combo_color == "Cache/gray.jpg":
+    #         self.Histogram(self.Image_of_combo_color)
+    #     else:
+            ####################    HAMZA_ERROR MESSAGE       ####################           ####################           ####################           ####################           ####################
+    # def buttonclicked(self):
+    #     org_hist, equalized_org_hist = Histogram(orginal_img)
+    #     filtered_org_hist, filtered_equalized_org_hist = Histogram(filtered_orginal_img)
+    #     then plot
+
+    def Histogram_helper(self):
+        img,org_hist, equalized_image = self.Histogram(self.Image_of_combo_img)
+        cv.imwrite("Cache/gray_2.jpg",img)
+        cv.imwrite("Cache/final.jpg",equalized_image)
+        self.Image_7.clear()
+        unique_org_hist, count_org_hist = np.unique(img,return_counts=True)
+        self.Image_7.plot(unique_org_hist,count_org_hist)                      #### Histogram plotting
+
+        unique_equa_hist, count_equa_hist = np.unique(equalized_image, return_counts=True)
+        self.Image_9.clear()
+        self.Image_9.plot(unique_equa_hist, count_equa_hist)
+
+        self.Image_6.setPixmap(QtGui.QPixmap("Cache/gray_2.jpg"))    #### Org_image plotting
+        self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))     #### Equalized_image plotting
+
+        if self.Image_of_combo_color == "Cache/gray.jpg":
+            filtered_img,filtered_hist,filtered_equa = self.Histogram(self.Image_of_combo_spatial)
+            cv.imwrite("Cache/filtered_img.jpg",filtered_img)
+            cv.imwrite("Cache/filtered_equalized.jpg",filtered_equa)
+            self.Image_11.clear()
+            unique_filtered_hist, count_filtered_hist = np.unique(filtered_img,return_counts=True)
+            self.Image_11.plot(unique_org_hist,count_org_hist)                      #### Histogram plotting
+
+            unique_equa_filtered_hist, count_equa_filtered_hist = np.unique(filtered_equa, return_counts=True)
+            self.Image_15.clear()
+            self.Image_15.plot(unique_equa_hist, count_equa_hist)
+
+            self.Image_10.setPixmap(QtGui.QPixmap("Cache/filtered_img.jpg"))           #### Org_image plotting
+            self.Image_14.setPixmap(QtGui.QPixmap("Cache/filtered_equalized.jpg"))     #### Equalized_image plotting
+
+        #elif self.Image_of_combo_color == "Cache/bgr.jpg":
+
+
+    def Histogram(self,Input):
+        x = np.shape(cv.imread(Input))
+        if x[-1] == 3:
+            self.gray = cv.cvtColor(cv.imread(Input),cv.COLOR_BGR2GRAY)
+        else:
+            self.gray = cv.imread(Input)
+        # cv.imwrite("Cache/gray_2.jpg",gray)
+        # self.Image_6.setPixmap(QtGui.QPixmap("Cache/gray_2.jpg"))
+        w,h = self.gray.shape
         Histogram = np.zeros(256)
-        gray_1D = np.reshape(gray,(1,(w*h)))
+        gray_1D = np.reshape(self.gray,(1,(w*h)))
         for i in range (w*h):
             Histogram[gray_1D[0,i]] += 1
 
-        self.Image_7.clear()
-        unique_2, count_2 = np.unique(gray,return_counts=True)
-        self.Image_7.plot(unique_2,count_2)
-        # fig_1 = plt.figure(figsize=(12, 12))
-        # ax1 = fig_1.add_subplot(4,4,1)
-        # ax1.imshow(Histogram)
-        # plt.plot(Histogram)
-        # plt.savefig("Cache/Histogram.jpg", bbox_inches = 'tight')
-        # self.Histogram = "Cache/Histogram.jpg"
-        #self.Image_7.setPixmap(QtGui.QPixmap(self.Histogram))
+        # self.Image_7.clear()
+        # unique_2, count_2 = np.unique(gray,return_counts=True)
+        # self.Image_7.plot(unique_2,count_2)
+
 
         #### Equalized Histogram
 
@@ -311,48 +362,29 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             Cm[i] = sum(Histogram_norm[0:i+1])
         scale = 255*Cm
         New_levels = np.round(scale)
-        Equalized_Histogram = np.zeros(256)
+        #Equalized_Histogram = np.zeros(256)
         #Equalized_Histogram[int(New_levels[gray_1D[0,w*h-1]])] 
-        for i in range(w*h):
-            Equalized_Histogram[int(New_levels[gray_1D[0,i]])] += 1 
+        # for i in range(w*h):
+        #     Equalized_Histogram[int(New_levels[gray_1D[0,i]])] += 1 
 
 
 
-
-
-        # plt.plot(Equalized_Histogram)
-        # plt.savefig("Cache/Equalized_Histogram.jpg",bbox_inches = 'tight')
-        # self.Equalized_Histogram = "Cache/Equalized_Histogram.jpg"
-        # self.Image_9.setPixmap(QtGui.QPixmap(self.Equalized_Histogram))
-        
-        #Final Image
-
-        # final = np.zeros_like(gray)                     
-        # for i in range (w):
-        #     for j in range (h):
-        #         final[i,j] = New_levels[gray[i,j]]
-
-        # cv.imshow("final",final)
-        # cv.waitKey(0)
 
         final = np.zeros_like(gray_1D)             #Can show Equalized image by 2 ways, 1)using 2 nested loops and 2x2 array
         for i in range (w*h):                      #or 2)using 1 loop, 1xsize array then reshape it to image dimensions 
             final[0,i] = New_levels[gray_1D[0,i]]
 
         final = np.reshape(final,(w,h))
-        cv.imwrite("Cache/final.jpg",final)
-        self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))
+        # cv.imwrite("Cache/final.jpg",final)
+        # self.Image_8.setPixmap(QtGui.QPixmap("Cache/final.jpg"))
 
-        unique, count = np.unique(final, return_counts=True)
-        self.Image_9.clear()
-        self.Image_9.plot(unique, count)
-
-        # #plt.bar(np.zeros(256),Equalized_Histogram)
-        # plt.bar(unique,count)
-        # plt.show()
-
+        # unique, count = np.unique(final, return_counts=True)
+        # self.Image_9.clear()
+        # self.Image_9.plot(unique, count)
     
-
+        return self.gray,Histogram,final
+        # x,y = Histogram(input_1)
+        # q,r = Histogram(input_2)
 
 
 
