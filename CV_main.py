@@ -1,10 +1,10 @@
 from Gui import Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib import pyplot as plt
+from pyqtgraph import PlotWidget, plot
 import numpy as np
 import cv2 as cv
 import sys, os
-from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 
 class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test    
@@ -158,7 +158,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             rows,cols = self.image_freq_2.shape[:2]
             crow, ccol = int(rows / 2), int(cols / 2)
             mask_1 = np.ones((rows, cols,2), np.uint8)
-            r = 80
+            r = 0.1*rows
             center = [crow, ccol]
             x, y = np.ogrid[:rows, :cols]
             mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= r*r
@@ -186,7 +186,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             ax4.imshow(img_back, cmap='gray')
             ax4.title.set_text('After inverse FFT')
             plt.savefig("Cache/inverse_dft.jpg",bbox_inches = 'tight')
-            
+
             self.image_freq_3 = "Cache/inverse_dft_1.jpg"
             self.image_freq_4 = "Cache/inverse_dft.jpg"
             self.Image_4.setPixmap(QtGui.QPixmap(self.image_freq_3))
@@ -196,7 +196,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             rows, cols = self.image_freq_2.shape[:2]
             crow, ccol = int(rows / 2), int(cols / 2)
             mask_2 = np.zeros((rows, cols, 2), np.uint8)
-            r = 80
+            r = 0.1*rows
             center = [crow, ccol]
             x, y = np.ogrid[:rows, :cols]
             mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= r*r
@@ -317,8 +317,6 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
             Cm[i] = sum(Histogram_norm[0:i+1])
         scale = 255*Cm
         New_levels = np.round(scale)
-
-
 
 
         final = np.zeros_like(gray_1D)             #Can show Equalized image by 2 ways, 1)using 2 nested loops and 2x2 array
