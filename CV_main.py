@@ -69,25 +69,28 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
     def apply_color_space(self):           ##Changes color space and sends the pic to image_2
         self.image = cv.imread(self.Image_of_combo_img)
         if self.Color_Combo.currentIndex() == 0:
-            cv.imwrite("Cache/rgb.jpg",self.image)
-            self.Image_of_combo_color = "Cache/rgb.jpg"
-        elif self.Color_Combo.currentIndex() == 1: 
-            self.gray = cv.cvtColor(self.image,cv.COLOR_BGR2GRAY)
-            cv.imwrite("Cache/gray.jpg",self.gray)
-            self.Image_of_combo_color = "Cache/gray.jpg"
-        elif self.Color_Combo.currentIndex() == 2:
-            self.bgr = cv.cvtColor(self.image,cv.COLOR_BGR2RGB)
-            cv.imwrite("Cache/bgr.jpg",self.bgr)
-            self.Image_of_combo_color = "Cache/bgr.jpg"
-        elif self.Color_Combo.currentIndex() == 3:
-            self.LAB = cv.cvtColor(self.image,cv.COLOR_BGR2LAB)
-            cv.imwrite("Cache/LAB.jpg",self.LAB)
-            self.Image_of_combo_color = "Cache/LAB.jpg"
-        elif self.Color_Combo.currentIndex() == 4:
-            self.HSV = cv.cvtColor(self.image,cv.COLOR_BGR2HSV)
-            cv.imwrite("Cache/HSV.jpg",self.HSV)
-            self.Image_of_combo_color = "Cache/HSV.jpg"
-        self.Image_2.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
+            self.Image_2.clear()
+        else:
+            if self.Color_Combo.currentIndex() == 1:
+                cv.imwrite("Cache/rgb.jpg",self.image)
+                self.Image_of_combo_color = "Cache/rgb.jpg"
+            elif self.Color_Combo.currentIndex() == 2: 
+                self.gray = cv.cvtColor(self.image,cv.COLOR_BGR2GRAY)
+                cv.imwrite("Cache/gray.jpg",self.gray)
+                self.Image_of_combo_color = "Cache/gray.jpg"
+            elif self.Color_Combo.currentIndex() == 3:
+                self.bgr = cv.cvtColor(self.image,cv.COLOR_BGR2RGB)
+                cv.imwrite("Cache/bgr.jpg",self.bgr)
+                self.Image_of_combo_color = "Cache/bgr.jpg"
+            elif self.Color_Combo.currentIndex() == 4:
+                self.LAB = cv.cvtColor(self.image,cv.COLOR_BGR2LAB)
+                cv.imwrite("Cache/LAB.jpg",self.LAB)
+                self.Image_of_combo_color = "Cache/LAB.jpg"
+            elif self.Color_Combo.currentIndex() == 5:
+                self.HSV = cv.cvtColor(self.image,cv.COLOR_BGR2HSV)
+                cv.imwrite("Cache/HSV.jpg",self.HSV)
+                self.Image_of_combo_color = "Cache/HSV.jpg"
+            self.Image_2.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
 
     def Picking_Image_Filters_Spatial(self):      ##Sends Image after changing color space to Image_3 & Image_4
         self.Image_3.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
