@@ -16,7 +16,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Color_Combo.activated.connect(self.apply_color_space)
         self.Img_to_filters_spatial.clicked.connect(self.Picking_Image_Filters_Spatial)
         self.Img_to_filters_freq.clicked.connect(self.pressed_freq)
-        self.Spatial_Combo.activated.connect(self.Picking_Filter_Spatial)
+        self.Spatial_Combo.activated.connect(self.Picking_Image_Spatial)
         self.Freq_Combo.activated.connect(self.Picking_Image_Freq)
         self.pushButton_Histogram.clicked.connect(self.Histogram_helper)
         self.pushButton_reset.clicked.connect(self.reset)
@@ -38,8 +38,8 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Image_9.clear()
         self.Image_10.clear()
         self.Image_11.clear()
-        self.Image_12.clear()
-        self.Image_13.clear()
+        self.Image_14.clear()
+        self.Image_15.clear()
         self.Image_Combo.setCurrentIndex(0)
         self.Color_Combo.setCurrentIndex(0)
         self.Spatial_Combo.setCurrentIndex(0)
@@ -90,24 +90,24 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         self.Image_2.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
 
     def Picking_Image_Filters_Spatial(self):      ##Sends Image after changing color space to Image_3 & Image_4
-        self.Image_3.setPixmap(QtGui.QPixmap(self.pressed_spatial()))
+        self.Image_3.setPixmap(QtGui.QPixmap(self.Image_of_combo_color))
 
-    def pressed_spatial(self):                   ##Function of pushButton (Done)
-        self.image = cv.imread(self.Image_of_combo_color)
-        cv.imwrite("Cache/image_to_be_filtered_spatial.jpg",self.image)
-        self.image_to_be_filtered_spatial = "Cache/image_to_be_filtered_spatial.jpg"
-        return self.image_to_be_filtered_spatial
-
-
+    # def pressed_spatial(self):                   ##Function of pushButton (Done)
+    #     self.image = cv.imread(self.Image_of_combo_color)
+    #     cv.imwrite("Cache/image_to_be_filtered_spatial.jpg",self.image)
+    #     self.image_to_be_filtered_spatial = "Cache/image_to_be_filtered_spatial.jpg"
+    #     return self.image_to_be_filtered_spatial
 
 
-    def Picking_Filter_Spatial(self):      ##Changes Image after applying spatial filter.
-        self.Image_3.setPixmap(QtGui.QPixmap(self.Picking_Image_Spatial()))
+
+
+    # def Picking_Filter_Spatial(self):      ##Changes Image after applying spatial filter.
+    #     self.Image_3.setPixmap(QtGui.QPixmap(self.Picking_Image_Spatial()))
 
     def Picking_Image_Spatial(self):       ##Apply different filters depending on combobox
-        self.image_spatial = cv.imread(self.image_to_be_filtered_spatial)
+        self.image_spatial = cv.imread(self.Image_of_combo_color)
         if self.Spatial_Combo.currentIndex() == 0:
-            pass
+            self.Image_3.clear()
         else:
             if self.Spatial_Combo.currentIndex() == 1:
                 self.blur = cv.GaussianBlur(self.image_spatial,(5,5),cv.BORDER_DEFAULT)
@@ -131,7 +131,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
                 self.median = cv.medianBlur(self.image_spatial,5)
                 cv.imwrite("Cache/median.jpg",self.median)
                 self.Image_of_combo_spatial = "Cache/median.jpg"       
-            return self.Image_of_combo_spatial
+            self.Image_3.setPixmap(QtGui.QPixmap(self.Image_of_combo_spatial))
 
 
     def pressed_freq(self):
@@ -326,7 +326,7 @@ class AppWindow(QtWidgets.QMainWindow,Ui_MainWindow): #Test
         for i in range (w*h):                      #or 2)using 1 loop, 1xsize array then reshape it to image dimensions 
             final[0,i] = New_levels[gray_1D[0,i]]
         final = np.reshape(final,(w,h))
-        
+
         return self.gray,Histogram,final
 
 
